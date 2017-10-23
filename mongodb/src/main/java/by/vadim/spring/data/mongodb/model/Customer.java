@@ -3,37 +3,23 @@ package by.vadim.spring.data.mongodb.model;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.mongodb.core.index.CompoundIndex;
-import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-
-import java.util.List;
 
 @Document
-@CompoundIndexes({
-        @CompoundIndex(name = "email_age", def = "{'email.id' : 1, 'age': 1}")
-})
 public class Customer {
 
-    @Id
-    private String id;
-    @Indexed
+    private @Id String id;
     private String firstName;
     private String lastName;
     private int age;
-    @Field("ListEmail")
-    private List<EmailAddress> listEmailAddress;
 
     public Customer() {}
 
     @PersistenceConstructor
-    public Customer(String firstName, String lastName, @Value("#root.age ?: 0") Integer age, List<EmailAddress> emailAddresses) {
+    public Customer(String firstName, String lastName, @Value("#root.age ?: 0") Integer age) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age=age;
-        this.listEmailAddress=emailAddresses;
     }
 
     public String getId() {
@@ -66,14 +52,6 @@ public class Customer {
 
     public void setAge(int age) {
         this.age = age;
-    }
-
-    public List<EmailAddress> getListEmailAddress() {
-        return listEmailAddress;
-    }
-
-    public void setListEmailAddress(List<EmailAddress> listEmailAddress) {
-        this.listEmailAddress = listEmailAddress;
     }
 
     @Override
